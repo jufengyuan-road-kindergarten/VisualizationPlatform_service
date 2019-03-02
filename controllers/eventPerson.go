@@ -85,13 +85,13 @@ func epRelations(name string, db *neoism.Database, res *map[string]interface{}) 
 	}, 0)
 	cq := neoism.CypherQuery{
 		Statement: `
-match (s)-[r]-(e:Person)
+match (s)<-[r]-(e:Person)
 where (s:Event or s:Meeting) and s.name contains {name}
 return 	toString(1000000 + id(r)) as id,
 		type(r) as type,
 		r as properties,
-		toString(id(s)) as source,
-		toString(id(e)) as target
+		toString(id(e)) as source,
+		toString(id(s)) as target
 `,
 		Parameters: neoism.Props{"name": name},
 		Result:     &relations,

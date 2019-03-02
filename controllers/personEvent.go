@@ -85,7 +85,7 @@ func peRelations(name string, db *neoism.Database, res *map[string]interface{}) 
 	}, 0)
 	cq := neoism.CypherQuery{
 		Statement: `
-match (s:Person)-[r]-(e)
+match (s:Person)-[r]->(e)
 where s.name contains {name} and (e:Event or e:Meeting)
 return 	toString(1000000 + id(r)) as id,
 		type(r) as type,
