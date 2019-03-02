@@ -28,5 +28,6 @@ func init() {
 		//无需登录也可使用的接口
 		freeGroup.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 		freeGroup.GET("/all", controllers.All)
+		freeGroup.GET("/person-event", controllers.PersonEvent)
 	}
 }
