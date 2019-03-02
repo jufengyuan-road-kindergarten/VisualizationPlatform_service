@@ -8,7 +8,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func PersonEvent(ctx *gin.Context) {
+func EventPerson(ctx *gin.Context) {
 	res := make(map[string]interface{})
 	db := dao.DB()
 	name, ok := ctx.GetQuery("name")
@@ -16,12 +16,12 @@ func PersonEvent(ctx *gin.Context) {
 		tools.ResponseError(ctx, errors.New("name参数不存在"))
 		return
 	}
-	err := peNodes(name, db, &res)
+	err := epNodes(name, db, &res)
 	if err != nil {
 		tools.ResponseError(ctx, err)
 		return
 	}
-	err = peRelations(name, db, &res)
+	err = epRelations(name, db, &res)
 	if err != nil {
 		tools.ResponseError(ctx, err)
 		return
@@ -29,7 +29,7 @@ func PersonEvent(ctx *gin.Context) {
 	tools.Response(ctx, tools.SUCCESS, res)
 }
 
-func peNodes(name string, db *neoism.Database, res *map[string]interface{}) (err error) {
+func epNodes(name string, db *neoism.Database, res *map[string]interface{}) (err error) {
 	nodes := make([]struct {
 		Name       string      `json:"name"`
 		Type       string      `json:"type"`
@@ -40,9 +40,9 @@ func peNodes(name string, db *neoism.Database, res *map[string]interface{}) (err
 	}, 0)
 	cq := neoism.CypherQuery{
 		Statement: `
-match (n:Person)-[*1]-(e)
-where n.name contains {name} and (e:Event or e:Meeting)
-with n,size((n)-[*1]-()) as degree
+match (n)-[*1]-(e:Person)
+where (n:Event or n:Meeting) and n.name contains {name}
+with n, size((n)-[*1]-()) as degree
 return 	n.name as name,
 		labels(n) as labels,
 		labels(n)[0] as type,
@@ -50,8 +50,8 @@ return 	n.name as name,
 		toString(id(n)) as id,
 		n as properties
 union
-match (n:Person)-[*1]-(e)
-where n.name contains {name} and (e:Event or e:Meeting)
+match (n)-[*1]-(e:Person)
+where (n:Event or n:Meeting) and n.name contains {name}
 with e,size(()-[*1]-(e)) as degree
 return e.name as name,
 		labels(e) as labels,
@@ -75,7 +75,7 @@ return e.name as name,
 	return
 }
 
-func peRelations(name string, db *neoism.Database, res *map[string]interface{}) (err error) {
+func epRelations(name string, db *neoism.Database, res *map[string]interface{}) (err error) {
 	relations := make([]struct {
 		Id         string      `json:"id"`
 		Type       string      `json:"type"`
@@ -85,8 +85,8 @@ func peRelations(name string, db *neoism.Database, res *map[string]interface{}) 
 	}, 0)
 	cq := neoism.CypherQuery{
 		Statement: `
-match (s:Person)-[r]-(e)
-where s.name contains {name} and (e:Event or e:Meeting)
+match (s)-[r]-(e:Person)
+where (s:Event or s:Meeting) and s.name contains {name}
 return 	toString(1000000 + id(r)) as id,
 		type(r) as type,
 		r as properties,

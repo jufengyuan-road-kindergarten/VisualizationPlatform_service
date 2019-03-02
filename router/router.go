@@ -29,5 +29,6 @@ func init() {
 		freeGroup.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 		freeGroup.GET("/all", controllers.All)
 		freeGroup.GET("/person-event", controllers.PersonEvent)
+		freeGroup.GET("/event-person", controllers.EventPerson)
 	}
 }
