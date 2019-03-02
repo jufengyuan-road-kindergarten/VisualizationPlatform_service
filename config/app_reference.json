@@ -1,12 +1,11 @@
 {
   "dataSource": {
     "host": "localhost",
-    "port": 3306,
-    "database": "test",
+    "port": 7474,
     "username": "root",
     "password": "root"
   },
   "address": "",
-  "port": 8127,
+  "port": 8300,
   "secret": "hello!!PaymentManagement"
 }

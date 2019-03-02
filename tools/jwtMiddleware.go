@@ -2,7 +2,7 @@ package tools
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/mzz2017/VisualizationPlatform_service/config"
+	"github.com/jufengyuan-road-kindergarten/VisualizationPlatform_service/config"
 	"github.com/dgrijalva/jwt-go/request"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/pkg/errors"

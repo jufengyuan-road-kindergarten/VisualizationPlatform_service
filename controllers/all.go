@@ -2,9 +2,9 @@ package controllers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/mzz2017/VisualizationPlatform_service/dao"
+	"github.com/jufengyuan-road-kindergarten/VisualizationPlatform_service/dao"
 	"github.com/jmcvetta/neoism"
-	"github.com/mzz2017/VisualizationPlatform_service/tools"
+	"github.com/jufengyuan-road-kindergarten/VisualizationPlatform_service/tools"
 )
 
 func All(ctx *gin.Context) {

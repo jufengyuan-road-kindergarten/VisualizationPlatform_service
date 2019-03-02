@@ -3,7 +3,7 @@ package dao
 import (
 	"fmt"
 	"sync"
-	"github.com/mzz2017/VisualizationPlatform_service/config"
+	"github.com/jufengyuan-road-kindergarten/VisualizationPlatform_service/config"
 	"github.com/jmcvetta/neoism"
 )
 

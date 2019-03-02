@@ -2,10 +2,10 @@ package main
 
 import (
 	"log"
-	"github.com/mzz2017/VisualizationPlatform_service/router"
+	"github.com/jufengyuan-road-kindergarten/VisualizationPlatform_service/router"
 	"fmt"
-	"github.com/mzz2017/VisualizationPlatform_service/config"
-	"github.com/mzz2017/VisualizationPlatform_service/dao"
+	"github.com/jufengyuan-road-kindergarten/VisualizationPlatform_service/config"
+	"github.com/jufengyuan-road-kindergarten/VisualizationPlatform_service/dao"
 )
 
 func main() {
