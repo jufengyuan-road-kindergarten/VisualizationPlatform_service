@@ -13,7 +13,7 @@ func PersonRelation(ctx *gin.Context) {
 	r:=make([]struct{
 		Name string `json:"name"`
 		Weight int `json:"weight"`
-		Events []string `json:"events"`
+		Events []interface{} `json:"events"`
 	},0)
 	name,_:=ctx.GetQuery("person")
 	p,_:=ctx.GetQuery("page")
@@ -60,7 +60,7 @@ Result:&nodes,
 	cq=neoism.CypherQuery{
 		Statement:`
 match (n:Person{name:{name}})--(e)--(p:Person)
-with size((p)--(e)) as weight,[(p)--(e)|e.name] as t,p
+with size((p)--(e)) as weight,[(p)--(e)|{name:e.name, type:labels(e)[0]}] as t,p
 order by weight desc
 skip {page}*{pageSize}
 limit {pageSize}
@@ -74,6 +74,6 @@ Result:&r,
 		tools.ResponseError(ctx,err)
 		return
 	}
-	tools.Response(ctx,tools.SUCCESS,gin.H{"relation":r,"node":nodes[0]})
+	tools.Response(ctx,tools.SUCCESS,gin.H{"relations":r,"node":nodes[0]})
 
 }
