@@ -30,5 +30,7 @@ func init() {
 		freeGroup.GET("/all", controllers.All)
 		freeGroup.GET("/person-event", controllers.PersonEvent)
 		freeGroup.GET("/event-person", controllers.EventPerson)
+		freeGroup.GET("/allName", controllers.AllName)
+		freeGroup.GET("/person-relation", controllers.PersonRelation)
 	}
 }

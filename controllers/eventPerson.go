@@ -42,7 +42,7 @@ func epNodes(name string, db *neoism.Database, res *map[string]interface{}) (err
 		Statement: `
 match (n)-[*1]-(e:Person)
 where (n:Event or n:Meeting) and n.name contains {name}
-with n, size((n)-[*1]-()) as degree
+with n, size((n)--()) as degree
 return 	n.name as name,
 		labels(n) as labels,
 		labels(n)[0] as type,
@@ -52,7 +52,7 @@ return 	n.name as name,
 union
 match (n)-[*1]-(e:Person)
 where (n:Event or n:Meeting) and n.name contains {name}
-with e,size(()-[*1]-(e)) as degree
+with e,size(()--(e)) as degree
 return e.name as name,
 		labels(e) as labels,
 		labels(e)[0] as type,

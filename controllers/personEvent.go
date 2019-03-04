@@ -40,7 +40,7 @@ func peNodes(name string, db *neoism.Database, res *map[string]interface{}) (err
 	}, 0)
 	cq := neoism.CypherQuery{
 		Statement: `
-match (n:Person)-[*1]-(e)
+match (n:Person)--(e)
 where n.name contains {name} and (e:Event or e:Meeting)
 with n,size((n)-[*1]-()) as degree
 return 	n.name as name,
@@ -50,7 +50,7 @@ return 	n.name as name,
 		toString(id(n)) as id,
 		n as properties
 union
-match (n:Person)-[*1]-(e)
+match (n:Person)--(e)
 where n.name contains {name} and (e:Event or e:Meeting)
 with e,size(()-[*1]-(e)) as degree
 return e.name as name,

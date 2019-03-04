@@ -36,7 +36,7 @@ func allNodes(db *neoism.Database, res *map[string]interface{}) (err error) {
 	cq := neoism.CypherQuery{
 		Statement: `
 match (n)
-with n,size((n)-[*1]-()) as degree
+with n,size((n)--()) as degree
 return 	n.name as name,
 		labels(n) as labels,
 		labels(n)[0] as type,
