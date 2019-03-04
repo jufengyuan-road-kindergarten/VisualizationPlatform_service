@@ -59,8 +59,9 @@ Result:&nodes,
 	//现在计算关系
 	cq=neoism.CypherQuery{
 		Statement:`
-match (n:Person{name:{name}})--(e)--(p:Person)
-with size((p)--(e)) as weight,[(p)--(e)|{name:e.name, type:labels(e)[0]}] as t,p
+match (n:Person{name:{name}})--()--(p:Person)
+with distinct p,n
+with size((p)--()--(n)) as weight,[(p)--(s)--(n)|{name:s.name, type:labels(s)[0]}] as t,p
 order by weight desc
 skip {page}*{pageSize}
 limit {pageSize}
@@ -74,6 +75,21 @@ Result:&r,
 		tools.ResponseError(ctx,err)
 		return
 	}
-	tools.Response(ctx,tools.SUCCESS,gin.H{"relations":r,"node":nodes[0]})
+
+	//现在计算总条数
+	cnt := make([]struct {
+		Cnt int `json:"cnt"`
+	}, 0)
+	cq=neoism.CypherQuery{
+		Statement:`match (n:Person{name:{name}})--()--(p:Person) return count(p) as cnt`,
+		Parameters:neoism.Props{"name":name},
+		Result:&cnt,
+	}
+	err=db.Cypher(&cq)
+	if err != nil {
+		tools.ResponseError(ctx,err)
+		return
+	}
+	tools.Response(ctx,tools.SUCCESS,gin.H{"relations":r,"node":nodes[0],"count":cnt[0].Cnt})
 
 }
