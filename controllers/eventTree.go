@@ -13,9 +13,10 @@ type node struct {
 	Children []node  `json:"children"`
 }
 type result struct {
-	Source string `json:"source"`
-	Edge   string `json:"edge"`
-	Target string `json:"target"`
+	Source   string `json:"source"`
+	Edge     string `json:"edge"`
+	Target   string `json:"target"`
+	hasBuilt bool
 }
 
 func EventTree(ctx *gin.Context) {
@@ -45,18 +46,19 @@ return l.source as source,l.type as edge,l.target as target
 		tools.Response(ctx, tools.SUCCESS, gin.H{"tree": gin.H{"name": name, "edge": nil, "children": []interface{}{}}, "node": node})
 		return
 	}
-	tools.Response(ctx, tools.SUCCESS, gin.H{"tree": buildTree(0, r[0].Source, nil, r), "node": node})
+	tools.Response(ctx, tools.SUCCESS, gin.H{"tree": buildTree(name, nil, r), "node": node})
 }
 
-func buildTree(i int, name string, edge *string, r []result) node {
+func buildTree(name string, edge *string, r []result) node {
 	n := node{
 		Name:     name,
 		Edge:     edge,
 		Children: []node{},
 	}
-	for j := i; j < len(r); j++ {
-		if r[j].Source == name {
-			n.Children = append(n.Children, buildTree(j+1, r[j].Target, &r[j].Edge, r))
+	for j := 0; j < len(r); j++ {
+		if r[j].hasBuilt == false && r[j].Source == name {
+			r[j].hasBuilt = true
+			n.Children = append(n.Children, buildTree(r[j].Target, &r[j].Edge, r))
 		}
 	}
 	return n
