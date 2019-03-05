@@ -11,12 +11,13 @@ func AllName(ctx *gin.Context) {
 	types,_:=ctx.GetQueryArray("type[]")
 	r := make([]struct {
 		Name string `json:"name"`
+		Type string `json:"type"`
 	}, 0)
 	db:=dao.DB()
 	cq:=neoism.CypherQuery{
 		Statement:`
 match(n) where labels(n)[0] in {types}
-return n.name as name
+return n.name as name,labels(n)[0] as type
 `,
 Parameters:neoism.Props{"types":types},
 Result:&r,
