@@ -1,11 +1,11 @@
 package main
 
 import (
-	"log"
-	"github.com/jufengyuan-road-kindergarten/VisualizationPlatform_service/router"
 	"fmt"
 	"github.com/jufengyuan-road-kindergarten/VisualizationPlatform_service/config"
 	"github.com/jufengyuan-road-kindergarten/VisualizationPlatform_service/dao"
+	"github.com/jufengyuan-road-kindergarten/VisualizationPlatform_service/router"
+	"log"
 )
 
 func main() {
